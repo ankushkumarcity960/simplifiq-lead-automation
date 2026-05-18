@@ -1,4 +1,3 @@
-Your architecture section got broken (`└── ├── csvLogger.js`). Here’s the corrected full README:
 
 # SimplifIQ — AI Lead Intake & Automation System
 
