@@ -7,6 +7,7 @@
 import nodemailer from 'nodemailer';
 import fs from 'fs';
 import path from 'path';
+
 function createTransporter() {
   return nodemailer.createTransport({
     host: 'smtp.gmail.com',
@@ -24,12 +25,7 @@ export async function sendReportEmail({ lead, pdfPath }) {
     return;
   }
 
-const transporter =
-createTransporter();
-
-await transporter.verify();
-
-console.log('[Email] SMTP connected');
+  const transporter =createTransporter();
 
   const pdfBuffer = fs.readFileSync(pdfPath);
   const filename = `SimplifIQ_Audit_${lead.company.replace(/\W+/g, '_')}.pdf`;
