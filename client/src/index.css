@@ -1,0 +1,30 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink: #0a0a0f;
+  --ink-2: #3d3d4d;
+  --ink-3: #8888a0;
+  --bg: #0a0a0f;
+  --surface: #13131f;
+  --surface-2: #1c1c2e;
+  --border: #2a2a3d;
+  --gold: #c9a84c;
+  --gold-light: #f0d98a;
+  --blue: #0ea5e9;
+  --green: #22c55e;
+  --radius: 12px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: var(--bg);
+  color: #fff;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+input, textarea, select {
+  font-family: inherit;
+}
