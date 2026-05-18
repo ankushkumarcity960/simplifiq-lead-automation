@@ -636,17 +636,28 @@ export async function generateReport({ lead, enriched }) {
   const htmlPath = pdfPath.replace('.pdf', '.html');
   fs.writeFileSync(htmlPath, html);
 
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
-  });
+const browser = await puppeteer.launch({
+  headless: true,
+  executablePath: process.env.PUPPETEER_EXECUTABLE_PATH
+    || '/opt/render/.cache/puppeteer/chrome/linux-127.0.6533.88/chrome-linux64/chrome',
+  args: [
+    '--no-sandbox',
+    '--disable-setuid-sandbox',
+    '--disable-dev-shm-usage',
+    '--disable-gpu',
+    '--single-process',          // critical on Render's memory-limited containers
+  ],
+  timeout: 60000,
+});
 
   try {
     const page = await browser.newPage();
 await page.setContent(html, {
-  waitUntil: 'domcontentloaded',
-  timeout: 60000
-});    
+  waitUntil: 'load',
+  timeout: 60000,
+});   
+await new Promise(r => setTimeout(r, 2000));
+
 
 await page.pdf({
       path: pdfPath,

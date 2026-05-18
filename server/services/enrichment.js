@@ -104,7 +104,12 @@ Return JSON with exactly these keys:
   let enriched = {};
   try {
     const raw = await callLLM(systemPrompt, userPrompt);
-    enriched = JSON.parse(raw);
+// Groq wraps responses in ```json ... ``` — strip them
+const cleaned = raw
+  .replace(/^```(?:json)?\s*/i, '')
+  .replace(/\s*```\s*$/, '')
+  .trim();
+enriched = JSON.parse(cleaned);
   } catch (err) {
     console.warn('[Enrich] Claude parse failed, using fallback:', err.message);
     // Graceful fallback with minimal data
