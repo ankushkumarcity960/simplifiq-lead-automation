@@ -332,7 +332,10 @@ export default function App() {
     // Final submit
     setLoading(true)
     try {
-      const { data } = await axios.post('/api/lead', values)
+      const { data } = await axios.post(
+`${import.meta.env.VITE_API_URL}/api/lead`,
+values
+)
       setSuccessMsg(data.message)
       setSubmitted(true)
     } catch (err) {
