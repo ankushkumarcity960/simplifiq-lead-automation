@@ -21,35 +21,76 @@ export async function sendReportEmail({ lead, pdfPath }) {
 lead.company.replace(/\W+/g,'_')
 }.pdf`;
 
-  await resend.emails.send({
+  try {
 
-    from:
-'SimplifIQ <onboarding@resend.dev>',
+    const response =
+      await resend.emails.send({
 
-    to: lead.email,
+      from:
+      process.env.FROM_EMAIL ||
+      'SimplifIQ <onboarding@resend.dev>',
 
-    subject:
-`Your ${lead.company}
-AI Audit is Ready`,
+      to: lead.email,
 
-    html:
-`<h2>Hi ${lead.name} 🎉</h2>
-<p>Your audit for
-<strong>${lead.company}</strong>
-is attached.</p>`,
+      subject:
+      `Your ${lead.company} AI Audit is Ready — SimplifIQ`,
 
-    attachments: [
-      {
-        filename,
-        content:
-pdfBuffer.toString('base64')
-      }
-    ]
+      html: `
+      <div style="
+        font-family:Arial;
+        max-width:600px;
+        margin:auto;
+        padding:20px;
+      ">
 
-  });
+      <h2>
+      Hi ${lead.name} 🎉
+      </h2>
 
-  console.log(
-`[Email] Sent to ${lead.email}`
-);
+      <p>
+      Your personalised
+      <strong>AI Audit Report</strong>
+      for
+      <strong>${lead.company}</strong>
+      is ready.
+      </p>
+
+      <p>
+      The PDF report is attached.
+      </p>
+
+      <p>
+      Thanks for trying
+      <strong>SimplifIQ</strong>.
+      </p>
+
+      </div>
+      `,
+
+      attachments: [
+        {
+          filename,
+          content:
+          pdfBuffer.toString('base64')
+        }
+      ]
+
+    });
+
+    console.log(
+      `[Email] Sent to ${lead.email}`
+    );
+
+    console.log(response);
+
+  } catch(err){
+
+    console.error(
+      '[Email] Failed:',
+      err.message
+    );
+
+    throw err;
+  }
 
 }
