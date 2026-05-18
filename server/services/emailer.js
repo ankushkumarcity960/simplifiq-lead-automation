@@ -81,7 +81,6 @@ lead.company.replace(/\W+/g,'_')
       `[Email] Sent to ${lead.email}`
     );
 
-    console.log(response);
 
   } catch(err){
 
