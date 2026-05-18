@@ -643,7 +643,11 @@ export async function generateReport({ lead, enriched }) {
 
   try {
     const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: 'networkidle0' });
+await page.setContent(html, {
+  waitUntil: 'domcontentloaded',
+  timeout: 60000
+});    
+await page.waitForTimeout(1000);
     await page.pdf({
       path: pdfPath,
       format: 'A4',
